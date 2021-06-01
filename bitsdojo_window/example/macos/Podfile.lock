@@ -1,5 +1,5 @@
 PODS:
-  - bitsdojo_window_macos (0.0.1):
+  - bitsdojo_window_macos (0.0.5):
     - FlutterMacOS
   - FlutterMacOS (1.0.0)
 
