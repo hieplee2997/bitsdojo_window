@@ -1,4 +1,5 @@
 #import "bitsdojo_window.h"
+
 NSWindow* _appWindow = NULL;
 bool _windowCanBeShown = false;
 bool _insideDoWhenWindowReady = false;
@@ -12,11 +13,11 @@ void setAppWindow(NSWindow* value){
 }
 
 NSWindow* getAppWindow(){
-    dispatch_sync(dispatch_get_main_queue(), ^{
-         if (NULL == _appWindow) {
+    if (NULL == _appWindow) {
+        dispatch_sync(dispatch_get_main_queue(), ^{
             _appWindow = [NSApp windows][0];
-        }
-    });
+        });
+    }
     return _appWindow;
 }
 
@@ -45,7 +46,7 @@ void hideWindow(NSWindow* window) {
 void moveWindow(NSWindow* window) {
     dispatch_async(dispatch_get_main_queue(), ^{
         [window performWindowDragWithEvent:[window currentEvent]];
-    });
+    }); 
 }
 
 void setSize(NSWindow* window, int width, int height){
@@ -78,11 +79,7 @@ void setMaxSize(NSWindow* window, int width, int height){
 }
 
 BDWStatus getScreenInfoForWindow(NSWindow* window, BDWScreenInfo *screenInfo){
-    __block NSScreen *screen;
-    
-    dispatch_async(dispatch_get_main_queue(), ^{
-        screen = [window screen];
-    });
+    auto screen = [window screen];
     auto workingScreenRect = [screen visibleFrame];
     auto fullScreenRect = [screen frame];
     auto menuBarHeight = fullScreenRect.size.height - workingScreenRect.size.height - workingScreenRect.origin.y;
@@ -140,22 +137,15 @@ BDWStatus setRectForWindow(NSWindow* window, BDWRect* rect){
 }
 
 BDWStatus getRectForWindow(NSWindow* window, BDWRect *rect){
-    auto block = ^ {
-        NSScreen* screen = [window screen];
-        auto workingScreenRect = [screen visibleFrame];
-        NSRect frame = [window frame];
-        rect->left = frame.origin.x;
-        auto frameTop = frame.origin.y + frame.size.height;
-        auto workingScreenTop = workingScreenRect.origin.y + workingScreenRect.size.height;
-        rect->top = workingScreenTop - frameTop;
-        rect->right = rect->left + frame.size.width;
-        rect->bottom = rect->top + frame.size.height;
-    };
-    if ([NSThread isMainThread]) {
-        block();
-    } else {
-        dispatch_async(dispatch_get_main_queue(), block);
-    }
+    NSScreen* screen = [window screen];
+    auto workingScreenRect = [screen visibleFrame];
+    NSRect frame = [window frame];
+    rect->left = frame.origin.x;
+    auto frameTop = frame.origin.y + frame.size.height;
+    auto workingScreenTop = workingScreenRect.origin.y + workingScreenRect.size.height;
+    rect->top = workingScreenTop - frameTop;
+    rect->right = rect->left + frame.size.width;
+    rect->bottom = rect->top + frame.size.height;
     return BDW_SUCCESS;
 }
 
@@ -164,11 +154,7 @@ bool isWindowMaximized(NSWindow* window){
 }
 
 bool isWindowVisible(NSWindow* window){
-    __block bool _isVisible;
-    dispatch_async(dispatch_get_main_queue(), ^{
-        _isVisible = [window isVisible];
-    });
-    return _isVisible;
+    return [window isVisible];
 }
 
 void maximizeOrRestoreWindow(NSWindow* window){
@@ -206,9 +192,11 @@ void setWindowTitle(NSWindow* window, const char* title){
 double getTitleBarHeight(NSWindow* window){
     __block double windowFrameHeight;
     __block double contentLayoutHeight;
-    dispatch_sync(dispatch_get_main_queue(), ^{
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
         windowFrameHeight = window.contentView.frame.size.height;
         contentLayoutHeight = window.contentLayoutRect.size.height;
     });
-    return windowFrameHeight - contentLayoutHeight;
+    double h = windowFrameHeight - contentLayoutHeight > 0 ? windowFrameHeight - contentLayoutHeight : 24;
+    return h;
 }
