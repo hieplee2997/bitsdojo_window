@@ -223,11 +223,15 @@ namespace bitsdojo_window {
     }
 
     void adjustMaximizedSize(HWND window, WINDOWPOS* winPos) {
+        if (winPos == NULL) {
+            return;
+        }
+
         auto screenRect = getWorkingScreenRectForWindow(window);
         if ((winPos->x < screenRect.left) &&
             (winPos->y < screenRect.top) &&
             (winPos->cx > (screenRect.right - screenRect.left))
-            && (winPos->cy > (screenRect.bottom - screenRect.top))) {            
+            && (winPos->cy > (screenRect.bottom - screenRect.top))) {
             winPos->x = screenRect.left;
             winPos->y = screenRect.top;
             winPos->cx = screenRect.right - screenRect.left;
