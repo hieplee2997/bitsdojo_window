@@ -545,7 +545,7 @@ LRESULT CALLBACK main_window_proc(HWND window, UINT message, WPARAM wparam, LPAR
             info->ptMaxTrackSize.x = maxSize.cx;
             info->ptMaxTrackSize.y = maxSize.cy;
         }
-        return 0;
+        break;
     }
     case WM_ENTERSIZEMOVE:
     {
