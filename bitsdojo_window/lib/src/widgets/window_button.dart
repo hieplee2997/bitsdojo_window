@@ -128,7 +128,7 @@ class WindowButton extends StatelessWidget {
             ? this.builder!(buttonContext, icon)
             : iconWithPadding;
         return SizedBox(
-            width: buttonSize.width, height: buttonSize.height, child: button);
+            width: buttonSize.width, height: double.infinity, child: button);
       },
       onPressed: () {
         if (this.onPressed != null) this.onPressed!();
@@ -164,6 +164,21 @@ class MaximizeWindowButton extends WindowButton {
             animate: animate ?? false,
             iconBuilder: (buttonContext) =>
                 MaximizeIcon(color: buttonContext.iconColor),
+            onPressed: onPressed ?? () => appWindow.maximizeOrRestore());
+}
+
+class RestoreWindowButton extends WindowButton {
+  RestoreWindowButton(
+      {Key? key,
+      WindowButtonColors? colors,
+      VoidCallback? onPressed,
+      bool? animate})
+      : super(
+            key: key,
+            colors: colors,
+            animate: animate ?? false,
+            iconBuilder: (buttonContext) =>
+                RestoreIcon(color: buttonContext.iconColor),
             onPressed: onPressed ?? () => appWindow.maximizeOrRestore());
 }
 
