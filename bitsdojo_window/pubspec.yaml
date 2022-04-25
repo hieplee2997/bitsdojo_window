@@ -32,5 +32,8 @@ dependencies:
     git: 
       url: https://github.com/hieplee2997/bitsdojo_window.git
       path: bitsdojo_window_macos
-  bitsdojo_window_linux: ^0.1.0+1
+  bitsdojo_window_linux:
+    git: 
+      url: https://github.com/hieplee2997/bitsdojo_window.git
+      path: bitsdojo_window_linux
     #path: ../bitsdojo_window_linux
