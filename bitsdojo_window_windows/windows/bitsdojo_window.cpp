@@ -237,7 +237,7 @@ namespace bitsdojo_window {
     }
 
     void adjustMaximizedSize(HWND window, WINDOWPOS* winPos) {
-        if (winPos == NULL) {
+        if (!winPos) {
             return;
         }
 
@@ -275,11 +275,13 @@ namespace bitsdojo_window {
 
     LRESULT handle_nccalcsize(HWND window, WPARAM wparam, LPARAM lparam)
     {
+        if (!wparam)
+        {
+            return 0;
+        }
         auto params = reinterpret_cast<NCCALCSIZE_PARAMS*>(lparam);
         if (params->lppos)
             adjustMaximizedSize(window, params->lppos);
-        bool isValidArea = static_cast<bool> (wparam);
-        if (isValidArea) adjustMaximizedSize(window, params->lppos);
         adjustMaximizedRects(window,params);
 
         auto initialRect = params->rgrc[0];
