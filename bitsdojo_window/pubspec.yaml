@@ -28,12 +28,15 @@ dependencies:
     git:
       url: https://github.com/hieplee2997/bitsdojo_window.git
       path: bitsdojo_window_windows
+      ref: develop
   bitsdojo_window_macos:
     git: 
       url: https://github.com/hieplee2997/bitsdojo_window.git
       path: bitsdojo_window_macos
+      ref: develop
   bitsdojo_window_linux:
     git: 
       url: https://github.com/hieplee2997/bitsdojo_window.git
       path: bitsdojo_window_linux
+      ref: develop
     #path: ../bitsdojo_window_linux
